@@ -1,7 +1,25 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-import BaseInput from '../ui/BaseInput.vue';
-import BaseButton from '../ui/BaseButton.vue';
+    import { RouterLink } from 'vue-router';
+    import BaseInput from '../ui/BaseInput.vue';
+    import BaseButton from '../ui/BaseButton.vue';
+    
+    import { reactive } from 'vue';
+    import { useStore } from 'vuex';
+    import { useRouter } from 'vue-router';
+
+    const store = useStore()
+    const router = useRouter()
+
+    const loginData = reactive({
+        email: "",
+        password: "",
+        isLogin: true,
+    })
+    
+    const login = async () => {
+        await store.dispatch("auth/getLoginData", loginData)
+        router.push("/")
+    }
 </script>
 
 <template>
@@ -12,20 +30,22 @@ import BaseButton from '../ui/BaseButton.vue';
             <h2 class="mt-4">Log in to your account</h2>
             <p>Welcome back! Please enter your details.</p>
         </div>
-        <form>
+        <form @submit.prevent="login">
             <div class="my-4"><!-- Email -->
                 <BaseInput
                     type="email"
                     identiy="email"
                     placeholder="Ex: student@timedoor.com"
-                    label="Email"/>
+                    label="Email"
+                    v-model="loginData.email"/>
             </div>
             <div class="my-4"><!-- Password -->
               <BaseInput
                 type="password"
                 identiy="password"
                 placeholder="*********"
-                label="Password"/>
+                label="Password"
+                v-model="loginData.password"/>
             </div>
             <BaseButton class="login w-100 my-3">Register</BaseButton>
         </form>

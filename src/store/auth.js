@@ -24,7 +24,7 @@ export default {
         },
     },
     actions: {
-        async getRegisterData({ commit, dispatch}, payload) {
+        async getRegisterData({ commit, dispatch }, payload) {
             const APIkey = import.meta.env.VITE_APP_KEY
             const authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key="
         
@@ -54,6 +54,42 @@ export default {
                 const { data } = await axios.post(
                 `https://timedoor-project-default-rtdb.firebaseio.com/user.json?auth=${state.token}`, payload)
                 commit("setUserLogin", {userData: payload, loginStatus: true})
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async getLoginData({ commit, dispatch }, payload) {
+            const APIkey = import.meta.env.VITE_APP_KEY
+            const authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="
+
+            try {
+                const { data } = await axios.post(authUrl + APIkey, {
+                    email: payload.email, 
+                    password: payload.password,
+                    returnSecureToken: true,
+                })
+                commit("setToken", {
+                    idToken: data.idToken,
+                    expiresIn: new Date().getTime() + Number.parseInt(data.expiresIn) * 1000
+                })
+                await dispatch("getUser", data.localId)
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async getUser({ commit }, payload) {
+            try {
+                const { data } = await axios.get(
+                    `https://timedoor-project-default-rtdb.firebaseio.com/user.json`)
+                for (let key in data) {
+                    if (data[key].userId === payload) {
+                        Cookies.set("UID", data[key].userId)
+                        commit("setUserLogin", {
+                            userData: data[key],
+                            loginStatus: true,
+                        })
+                    }
+                }
             } catch (err) {
                 console.log(err)
             }
