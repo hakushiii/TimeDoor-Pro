@@ -15,7 +15,7 @@ const recipeList = RECIPE_DATA
             how-tos based on the food you love and the friends
             you follow.
             </p>
-            <RecipeList :recipes="recipeList"></RecipeList>
+            <RecipeList :recipes="recipeList" />
         </div>
     </div>
 </template>
