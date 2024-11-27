@@ -1,5 +1,8 @@
 <script setup>
 import RecipeList from '../recipe/RecipeList.vue';
+import RECIPE_DATA from '../../recipe.js';
+
+const recipeList = RECIPE_DATA
 </script>
 
 <template>
@@ -11,8 +14,8 @@ import RecipeList from '../recipe/RecipeList.vue';
             Allrecipes.Discover recipes, cooks, videos, and
             how-tos based on the food you love and the friends
             you follow.
-            <RecipeList />
             </p>
+            <RecipeList :recipes="recipeList"></RecipeList>
         </div>
     </div>
 </template>
