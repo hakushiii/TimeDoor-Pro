@@ -16,14 +16,14 @@
                     <div class="col-md-6"><!-- Firstname -->
                         <BaseInput
                         type="text"
-                        identiy="username"
+                        identiy="firstname"
                         placeholder="Ex: Juan"
                         label="First Name"/>
                     </div>
                     <div class="col-md-6"><!-- Lastname -->
                         <BaseInput
                         type="text"
-                        identiy="username"
+                        identiy="lastname"
                         placeholder="Ex: Carlos"
                         label="Last Name"/>
                     </div>
@@ -57,8 +57,8 @@
                         label="Confirm Password"/>
                 </div>
                 <div class="my-4">
-                    <base-input type="file" identity="recipeImage"
-                    label="Profile Photo" isImage="true">
+                    <BaseInput type="file" identity="recipeImage"
+                    label="Profile Photo" isImage=True>
                     <div>
                         <div class="border p-1 mt-2 rounded-circle" >
                             <img src="../../assets/images/user.png"
@@ -72,7 +72,7 @@
                             rounded-circle bg-white" ></i>
                         </div>
                     </div>
-                    </base-input>
+                </BaseInput>
                 </div>
                 <BaseButton class="login w-100 my-3">Register</BaseButton>
             </form>

@@ -15,9 +15,11 @@
             {{ label }} <span style="color: #cb3a31" >*</span>
             <slot></slot>
         </label>
-        <input class="form-control" :type="type" :id="identity"
-        :placeholder="placeholder" :value="modelValue"
-        :readonly="readonly === '1'"
-        :class="[{ 'd-none': isImage}, 'form-control' ]"/>
+        <input class="form-control" 
+        :type="type" 
+        :id="identity"
+        :placeholder="placeholder" 
+        :value="modelValue"
+        :readonly="readonly === '1'"/>
     </div>
 </template>
