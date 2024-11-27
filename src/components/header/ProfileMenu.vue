@@ -25,7 +25,7 @@
                     My Profile
                 </a>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item">My Profile</li>
+                    <router-link to="/user/personal-info" class="dropdown-item">My Profile</router-link>
                     <li class="dropdown-item">Favorited Recipes</li>
                     <li class="dropdown-item">My Recipes</li>
                     <li><hr class="dropdown-divider" /></li>
