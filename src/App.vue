@@ -7,7 +7,7 @@
 <template>
     <div>
         <WebHeader />
-        <HomePage />
+        <RouterView />
         <WebFooter />
     </div>
 </template>
