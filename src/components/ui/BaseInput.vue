@@ -5,7 +5,8 @@
     identiy: { type: String, require: true },
     placeholder: { type: String, require: false },
     readonly: { type: String, require: true, default: "0" },
-    isImage: { type: Boolean, require: true, default: false}
+    isImage: { type: Boolean, require: true, default: false},
+    modelValue: { type: [String, Number]}
     })
 </script>
 
@@ -19,7 +20,9 @@
         :type="type" 
         :id="identity"
         :placeholder="placeholder" 
+        :readonly="readonly === '1'"
         :value="modelValue"
-        :readonly="readonly === '1'"/>
+        @input="$emit('update:modelValue', $event.target.value)"
+        @keyup="$emit('keyInput', $event.target.value)"/>
     </div>
 </template>
