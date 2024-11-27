@@ -90,7 +90,7 @@ export default {
             try {
                 const { data } = await axios.get(
                     `https://timedoor-project-default-rtdb.firebaseio.com/user.json`)
-                for (let key in data) {
+                    for (let key in data) {
                     if (data[key].userId === payload) {
                         Cookies.set("UID", data[key].userId)
                         commit("setUserLogin", {
