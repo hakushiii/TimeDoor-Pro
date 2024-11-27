@@ -1,8 +1,23 @@
 <script setup>
 import RecipeList from '../recipe/RecipeList.vue';
-import RECIPE_DATA from '../../recipe.js';
 
-const recipeList = RECIPE_DATA
+import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore()
+const recipeListStatus = ref(false)
+const recipeList = ref()
+
+onMounted(async () => {
+    try {
+        await store.dispatch("recipe/getRecipeData")
+        recipeListStatus.value = true
+        recipeList.value = store.state.recipe.recipes
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 </script>
 
 <template>
@@ -15,7 +30,9 @@ const recipeList = RECIPE_DATA
             how-tos based on the food you love and the friends
             you follow.
             </p>
-            <RecipeList :recipes="recipeList" />
+            <RecipeList 
+            :recipes="recipeList" 
+            v-if="recipeListStatus"/>
         </div>
     </div>
 </template>
