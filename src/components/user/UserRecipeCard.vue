@@ -18,7 +18,7 @@
                         <slot></slot>
                     </div>
                     <div class="d-flex">
-                        <img :src="recipe.ImageLink" :alt="recipe.name" width="90" height="80" class="rounded" style="object-fit: cover">
+                        <img :src="recipe.imageLink" :alt="recipe.name" width="90" height="80" class="rounded" style="object-fit: cover">
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-3 pt-3 border-top">
