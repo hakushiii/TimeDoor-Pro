@@ -9,23 +9,24 @@ import { store } from "./store/index"
 
 const checkAuth = () => {
     const jwtCookie = Cookies.get("jwt")
-    const expirationDate = Cookies.get("expirationDate")
+    const expirationDate = Cookies.get("tokenExpirationDate")
     const userId = Cookies.get("UID")
 
     if (jwtCookie) {
         if (new Date().getTime() < +expirationDate) {
             store.commit("auth/setToken", {
                 idToken: jwtCookie,
-                expiresIn: expirationDate,})
+                expiresIn: expirationDate,
+            })
             store.dispatch("auth/getUser", userId)
             return true
         } else {
             store.commit("auth/setUserLogout")
             return false
         }
-        } else {
-            return false
-        }
+    } else {
+        return false
+    }
 }
 
 export const routes = [
