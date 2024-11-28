@@ -26,7 +26,9 @@
                         @click="$emit('btnRemove')">
                         {{ buttonName[0] }}
                     </button>
-                    <button class="btn edit-btn px-3 py-2 rounded-pill">{{  buttonName[1] }}</button>
+                    <RouterLink :to="'/edit-recipe/' + recipe.id" class="btn edit-btn px-3 py-2 rounded-pill">
+                        {{  buttonName[1] }}
+                    </RouterLink>
                 </div>
             </div>
         </div>

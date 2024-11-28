@@ -4,14 +4,20 @@
     import BaseTextArea from '../ui/BaseTextArea.vue';
     import BaseButton from '../ui/BaseButton.vue';
 
-    import { reactive } from "vue";
+    import { onMounted, reactive } from "vue";
     import { ref } from 'vue';
     import { useStore } from 'vuex';
-    import { useRouter } from 'vue-router';
+    import { useRoute, useRouter } from 'vue-router';
     
     const store = useStore()
     const router = useRouter()
-    
+    const route = useRoute()
+
+    const props = defineProps({
+        isEdit: { type: Boolean, default: false },
+        detailData: { type: Object },
+    })
+
     const recipeData = reactive({
         imageLink: "",
         name: "",
@@ -24,6 +30,21 @@
         directions: [],
     });
 
+    onMounted(async () => {
+        if (props.isEdit) {
+            try {
+                await store.dispatch("recipe/getRecipeDetail", route.params.id)
+                recipeData.value = store.state.recipe.recipeDetail
+                ingredientCount.value = recipeData.value.ingredients.length
+                directionCount.value = recipeData.value.directions.length
+            } catch (err) {
+                console.log(err)
+            } 
+        }
+    })
+    
+
+
     const checkImage = (e) => {
         const file = e.target.files[0]
         const reader = new FileReader()
@@ -34,8 +55,8 @@
         })
     }   
 
-    const ingredientCount = ref(1);
-    const directionCount = ref(1);
+    const ingredientCount = ref(1)
+    const directionCount = ref(1)
 
     const addIngredient = () => {
         ingredientCount.value++
@@ -60,8 +81,13 @@
     }
 
     const addNewRecipe = async () => {
-        await store.dispatch("recipe/addNewRecipe", recipeData)
-        router.push("user/user-recipe")
+        if (props.isEdit){
+            console.log(recipeData.value)
+            await store.dispatch("recipe/updateRecipe", { id: route.params.id, newRecipe: recipeData })
+        } else {
+            await store.dispatch("recipe/addNewRecipe", recipeData)
+        }
+        router.push("/user/user-recipe")
     }
 
 </script>

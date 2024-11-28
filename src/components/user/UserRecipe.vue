@@ -2,9 +2,11 @@
     import UserRecipeCard from './UserRecipeCard.vue';
 
     import { computed } from 'vue';
+    import { useRouter } from 'vue-router';
     import { useStore } from 'vuex';
 
     const store = useStore()
+    const router = useRouter()
 
     const recipes = computed(() => {
         const allRecipe = store.state.recipe.recipes
