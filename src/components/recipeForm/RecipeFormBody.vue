@@ -6,6 +6,11 @@
 
     import { reactive } from "vue";
     import { ref } from 'vue';
+    import { useStore } from 'vuex';
+    import { useRouter } from 'vue-router';
+    
+    const store = useStore()
+    const router = useRouter()
     
     const recipeData = reactive({
         imageLink: "",
@@ -54,11 +59,16 @@
         recipeData.totalTime = parseInt(recipeData.prepTime) + parseInt(recipeData.cookTime)
     }
 
+    const addNewRecipe = async () => {
+        await store.dispatch("recipe/addNewRecipe", recipeData)
+        router.push("user/user-recipe")
+    }
+
 </script>
 
 <template>
     <li class="list-group-item">
-        <form>
+        <form @submit.prevent="addNewRecipe">
             <!-- General Information Start -->
             <div>
                 <p class="my-3 fs-5 fw-semibold">General Information</p>
