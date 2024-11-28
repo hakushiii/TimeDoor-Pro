@@ -1,3 +1,18 @@
+<script setup>
+    import UserRecipeCard from './UserRecipeCard.vue';
+
+    import { computed } from 'vue';
+    import { useStore } from 'vuex';
+
+    const store = useStore()
+
+    const recipes = computed(() => {
+        const allRecipe = store.state.recipe.recipes
+        const userId = store.state.auth.userLogin.userId
+
+        return allRecipe.filter((recipe) => recipe.userId === userId)
+    })
+</script>
 
 <template>
     <ul class="list-group">
@@ -18,6 +33,13 @@
             <p class="mt-2 mb-4 fs-5 fw-semibold">Recipe</p>
             <div class="row">
                 <!-- User Recipe Card -->
+                 <UserRecipeCard 
+                    v-for="recipe in recipes"
+                    :key="recipe.id"
+                    :recipe="recipe"
+                    :buttonName="['Delete', 'Edit']" >
+                    <p>{{  new Date(recipe.createdAt).toDateString() }}</p>
+                 </UserRecipeCard>
             </div>
         </li>
     </ul>
