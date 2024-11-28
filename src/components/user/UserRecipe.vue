@@ -12,6 +12,10 @@
 
         return allRecipe.filter((recipe) => recipe.userId === userId)
     })
+
+    const deleteRecipe = async (id) => {
+        await store.dispatch("recipe/deleteRecipe", id)
+    }
 </script>
 
 <template>
@@ -37,7 +41,8 @@
                     v-for="recipe in recipes"
                     :key="recipe.id"
                     :recipe="recipe"
-                    :buttonName="['Delete', 'Edit']" >
+                    :buttonName="['Delete', 'Edit']"
+                    @btnRemove="deleteRecipe(recipe.id)" >
                     <p>{{  new Date(recipe.createdAt).toDateString() }}</p>
                  </UserRecipeCard>
             </div>

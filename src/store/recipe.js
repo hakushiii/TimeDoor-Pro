@@ -63,5 +63,15 @@ export default {
                 console.log(err)
             }
         },
+        async deleteRecipe({ dispatch, rootState}, payload) {
+            try {
+                const { data } = await axios.delete(
+                    `https://timedoor-project-default-rtdb.firebaseio.com/recipes/${payload}.json?auth=${rootState.auth.token}`)
+                
+                await dispatch("getRecipeData")
+            } catch (err) {
+                console.log(err)
+            }
+        },
     },
 }
