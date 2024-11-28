@@ -51,7 +51,7 @@ export default {
                 username: rootState.auth.userLogin.username,
                 createdAt: Date.now(),
                 likes: ["null"],
-                uerId: rootState.auth.userLogin.userId,
+                userId: rootState.auth.userLogin.userId,
             }
 
             try {
