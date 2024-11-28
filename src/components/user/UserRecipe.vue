@@ -8,9 +8,9 @@
                     <p class="my-0 text-secondary">Add your original recipe here</p>
                 </div>
                 <div>
-                    <button class="btn add-btn px-3 py-2 rounded-pill">
+                    <RouterLink to="/new-recipe" class="btn add-btn px-3 py-2 rounded-pill">
                         <i class="fa-solid fa-circle-plus pe-2"></i>Add Recipe
-                    </button>
+                    </RouterLink>
                 </div>
             </div>
         </li>
