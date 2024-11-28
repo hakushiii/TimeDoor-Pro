@@ -4,6 +4,56 @@
     import BaseTextArea from '../ui/BaseTextArea.vue';
     import BaseButton from '../ui/BaseButton.vue';
 
+    import { reactive } from "vue";
+    import { ref } from 'vue';
+    
+    const recipeData = reactive({
+        imageLink: "",
+        name: "",
+        description: "",
+        category: "",
+        prepTime: 0,
+        cookTime: 0,
+        totalTime: 0,
+        ingredients: [],
+        directions: [],
+    });
+
+    const checkImage = (e) => {
+        const file = e.target.files[0]
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+
+        reader.addEventListener("load", () => {
+            recipeData.imageLink = reader.result
+        })
+    }   
+
+    const ingredientCount = ref(1);
+    const directionCount = ref(1);
+
+    const addIngredient = () => {
+        ingredientCount.value++
+    }
+
+    const addDirection = () => {
+        directionCount.value++
+    }
+
+    const deleteIngredient = (index) => {
+        recipeData.ingredients.splice(index, 1)
+        ingredientCount.value--
+    }
+
+    const deleteDirection = (index) => {
+        recipeData.directions.splice(index, 1)
+        directionCount.value--
+    }
+
+    const totalTime = () => {
+        recipeData.totalTime = parseInt(recipeData.prepTime) + parseInt(recipeData.cookTime)
+    }
+
 </script>
 
 <template>
@@ -18,7 +68,8 @@
                         <BaseInput 
                             type="file"
                             identiy="recipeImage"
-                            label="Photo Image" />
+                            label="Photo Image"
+                            @input="checkImage" />
                     </div>
                     <!-- Image End -->
                     
@@ -28,7 +79,8 @@
                             type="text"
                             identiy="recipeTitle"
                             placeholder="Give a title to the recipe"
-                            label="Recipe Title" />
+                            label="Recipe Title"
+                            v-model="recipeData.name" />
                     </div>
                     <!-- Recipe Title  End -->
                     
@@ -37,14 +89,16 @@
                         <BaseTextArea 
                             identity="recipeDescription"
                             label="Description"
-                            placeholder="Share a story behind the recipe" />
+                            placeholder="Share a story behind the recipe"
+                            v-model="recipeData.description" />
                      </div>
                     <!-- Recipe Description End -->
                     
                     <!-- Recipe Cateogry Start -->
                     <div class="mb-3"> <!-- 4 --> 
                         <BaseSelect 
-                        :data="['Breakfast', 'Lunch', 'Dinner', 'Meals', 'Snacks']" />
+                        :data="['Breakfast', 'Lunch', 'Dinner', 'Meals', 'Snacks']"
+                        v-model="recipeData.category" />
                     </div>
                     <!-- Recipe Category End -->
                 </div>
@@ -61,7 +115,8 @@
                         type="number"
                         identiy="prepTime"
                         placeholder="0"
-                        label="Prep Time" />
+                        label="Prep Time"
+                        v-model="recipeData.prepTime" />
                     </div>
                     <!-- Preparation Time End -->
                     
@@ -71,7 +126,8 @@
                         type="number"
                         identiy="cookTime"
                         placeholder="0"
-                        label="Cook Time" />
+                        label="Cook Time"
+                        v-model="recipeData.cookTime" />
                     </div>
                     <!-- Cook Time End -->
                     
@@ -81,7 +137,9 @@
                         type="number"
                         identiy="totalTime"
                         placeholder="0"
-                        label="Total Time" />
+                        label="Total Time"
+                        v-model="recipeData.totalTime" 
+                        @totalTimeFocus="totalTime" readonly="1"/>
                     </div>
                     <!-- Total Time End -->
                 </div>
@@ -98,18 +156,19 @@
                     recipe (i.e. Cake, Frosting, Dressing).
                 </p>
                 <div>
-                    <div class="mb-3 row">
+                    <div class="mb-3 row" v-for="count in ingredientCount" :key="count">
                         <!-- Ingredient Input Start -->
                         <div class="col-lg-11 col-11"> <!-- 8 --> 
                             <BaseInput
                                 type="text"
                                 identiy="ingredient"
-                                placeholder="Ex: 1 shot of vodka" />
+                                placeholder="Ex: 1 shot of vodka"
+                                v-model="recipeData.ingredients[count - 1]" />
                         </div>
                         <!-- Ingredient Input End -->
                         <div
                             class="col-lg-1 col-1 col-form-label align-self-end delete-ingredient"
-                            style="color: #cb3a31">
+                            style="color: #cb3a31" v-if="ingredientCount > 1" @click="deleteIngredient(count - 1)">
                             <i class="fa-regular fa-trash-can px-1"></i>
                             <span class="d-none d-md-inline">Delete</span>
                         </div>
@@ -117,7 +176,8 @@
                 </div>
                 <!-- Add More Button Start -->
                 <!-- 9 -->
-                 <BaseButton class="new-ingredient-btn px-3 py-2 ty" type="button">Add More</BaseButton>
+                 <BaseButton class="new-ingredient-btn px-3 py-2 ty" type="button"
+                 @clickButton="addIngredient">Add More</BaseButton>
                 <!-- Add More Button End -->
             </div>
             <!-- Ingredients End -->
@@ -131,18 +191,19 @@
                   the different parts of the recipe
                 </p>
                 <div>
-                  <div class="mb-3 row">
+                  <div class="mb-3 row" v-for="count in directionCount" :key="count">
                     <!-- Direction Input Start -->
                     <div class="col-lg-11 col-11"><!-- 10 -->
                         <BaseInput 
                         type="text"
                         identiy="direction"
-                        placeholder="Step 1: Pre-heat oven to 300*F" />
+                        placeholder="Step 1: Pre-heat oven to 300*F"
+                        v-model="recipeData.directions[count - 1]" />
                     </div>
                     <!-- Direction Input End -->
                         <div
                             class="col-lg-1 col-1 col-form-label align-self-end delete-ingredient"
-                            style="color: #cb3a31">
+                            style="color: #cb3a31" v-if="directionCount > 1" @click="deleteDirection(count - 1)">
                             <i class="fa-regular fa-trash-can px-1"></i>
                             <span class="d-none d-md-inline">Delete</span>
                         </div>
@@ -150,7 +211,8 @@
                 </div>
                 <!-- Add More Button Start -->
                 <!-- 11 -->
-                <BaseButton class="new-ingredient-btn px-3 py-2 ty" type="button">Add More</BaseButton>
+                <BaseButton class="new-ingredient-btn px-3 py-2 ty" type="button"
+                @clickButton="addDirection">Add More</BaseButton>
                 <!-- Add More Button End -->
             </div>
             <!-- Direction End -->
